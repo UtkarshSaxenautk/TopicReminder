@@ -1,0 +1,44 @@
+<!Doctype html>
+<html lang="en">
+  <%- include('../partials/head.ejs') %> 
+    
+    <body>
+      <nav>
+        <div class="nav-wrapper  container">
+          <a href="./" class="brand-logo">Topic Reminder <%= title2 %></a>
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="./">Home-page</a></li>
+            <li><a href="badges.html">Details</a></li>
+            <li><a href="collapsible.html">Help</a></li>
+          </ul>
+        </div>
+      </nav>
+      
+      <h1 style="text-align: center;">Welcome to Study page</h1>
+      
+      <div class="row">
+        <form class="col s12" action="/topic" method="POST">
+          <div class="row">
+            <div class="input-field col s6">
+              <i class="material-icons prefix">Study</i>
+              <input id="standard" type="text" class="validate" name="name" >
+              <label for="standard">Enter Standard</label>
+              
+            </div>
+            <div class="input-field col s6">
+              <i class="material-icons prefix">Topic</i>
+              <input id="topic" type="tel" class="validate" name = "topicname" >
+              <label for="topic">Enter Topic</label>
+            </div>
+          </div>
+           <button class="btn">Add Topic</button>
+        </form>
+      </div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js">
+      document.addEventListener("DOMContentLoaded" , function(event){
+       M.updateTextFields();
+      });
+      </script>
+      
+    </body>
+</html>

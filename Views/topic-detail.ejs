@@ -1,0 +1,35 @@
+<!Doctype html>
+<html lang="en">
+    <%- include('../partials/head.ejs') %>
+    <body>
+      <%- include('../partials/nav.ejs') %>
+      
+            
+      <h3 style="text-align: center;">Our topic is : <%=topic.topicname %></h1>
+       <h4  style="text-align: center;">Belongs to  : <%= topic.name %></h5>
+
+      <div class="container">
+          <a id = "deletebtn" style="text-align: center;"class = "delete btn" data-id = "<%=topic._id%>" href = "">Delete</a>
+     
+    </div>
+    <script>
+        deletebtn.onclick = function(e) {
+          e.preventDefault();
+           // console.log(deletebtn)
+           const id = deletebtn.dataset.id
+         //  const id = e.target.getAttribute('data-id')
+
+           console.log(id)
+           const endpoint = `/topic/${id}` ;
+           fetch(endpoint , {
+               method : 'DELETE'
+           }).then(res => res.json()).then(data => {
+               console.log(data);
+               window.location.href = data.redirect ;
+           }).catch(err => console.log(err))
+        
+        }
+    </script>
+    
+    </body>
+</html>

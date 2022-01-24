@@ -1,0 +1,169 @@
+<!Doctype html>
+<html lang="en">
+    <%- include('../partials/head.ejs') %>
+    
+
+    <body>
+      
+      <nav>
+        <div class="nav-wrapper  container">
+          <a href="./" class="brand-logo">Topic Reminder</a>
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="./study">Study-page</a></li>
+            <li><a href="badges.html">Details</a></li>
+            <li><a href="collapsible.html">Help</a></li>
+          </ul>
+        </div>
+      </nav>
+            
+      <h1 style="text-align: center;">Welcome to my page</h1>
+      
+      <div id = "itemContainer" class="container">
+      <ul class="collection with-header">
+        <li class="collection-header"><h4 style="text-align: center;">Topic Names</h4></li>
+         <% if(Topic.length > 0 ){ %>
+          
+           <% Topic.forEach(Topic => { %>
+              <li class="collection-item"><div><a href="/topic/<%= Topic._id %>"><%= Topic.name %> has <%= Topic.topicname %></a>
+                
+                <a href = "#! " class = "secondary-content" >
+                  <i class="material-icons" data-id = "<%= Topic._id %>"  >delete</i> 
+                <i class="material-icons modal-trigger"    href = "#edit_topic_modal" data-id = "<%= Topic._id %>">edit</i></a>
+              </li>
+           <%  }); %>
+        
+          
+         <% } else { %>
+           <li> No topic found </li>
+        <% } %>
+          
+        
+      </ul>
+    </div>
+    <div id="edit_topic_modal" class="modal">
+      <div class="modal-content">
+        <h4>Edit Form</h4>
+        <form id = "edit_form" action = "">
+          <input type = "text" name = "name" placeholder="standard">
+          <input type = "text" name = "topicname" placeholder="Topicname">
+          <button class = "btn">Update</button>
+        </form>
+      </div>
+     
+    </div>
+    
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+            
+    <script>
+      var updateId ;
+      document.addEventListener('DOMContentLoaded', function() {
+      var elems = document.querySelectorAll('.modal');
+       var instances = M.Modal.init(elems);
+       });
+       
+
+      edit_form.onsubmit = async function (e) {
+        e.preventDefault();
+        let data = new FormData(edit_form);
+        // for (var pair of data.entries()) {
+        //     console.log(pair[0] + ', ' + pair[1]);
+        // }
+        let response = await fetch(`/topic/${updateId}`, {
+            method: 'PUT',
+            body: new URLSearchParams(data),
+            headers: new Headers({
+                'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            })
+        })
+        let result = await response.json()
+        edit_form.reset();
+        window.location.reload();
+        alert(result.msg);
+      }
+      itemContainer.onclick = function (e) {
+        // console.log('e.target.textContent', e.target.textContent)
+        if (e.target.textContent === 'edit') {
+            updateId = e.target.getAttribute('data-id');
+            console.log(updateId)
+
+        }
+        if (e.target.textContent === 'delete') {
+            // const id = deleteBtn.dataset.id
+            const id = e.target.getAttribute('data-id');
+            console.log(id)
+            const endpoint = `/topic/${id}`;
+            fetch(endpoint, {
+                method: 'DELETE'
+            }).then(res => res.json()).
+                then(data => {
+                    console.log('data', data)
+                    window.location.href = data.redirect
+                }).
+                catch(err => console.log(err))
+        }
+      }
+      /* itemContainer.onclick = function (e) {
+        //console.log('e.target.textContent', e.target.textContent)
+        if (e.target.textContent === 'edit') {
+           updateId = e.target.getAttribute('data-id')
+           console.log(updateId)
+        }
+        if (e.target.textContent === 'delete') {
+            // const id = deleteBtn.dataset.id
+            const id = e.target.getAttribute('data-id')
+            console.log(id)
+            const endpoint = `/topic/${id}`;
+            fetch(endpoint, {
+                method: 'DELETE'
+            }).then(res => res.json()).
+                then(data => {
+                    console.log('data', data)
+                    window.location.href = data.redirect
+                }).
+                catch(err => console.log(err))
+        }
+      }*/
+
+      /* edit_form.onsubmit = function(e){
+       e.preventDefault();
+        let data = new FormData(edit_form);
+      // for(var pair of data.entries()) {
+       //  console.log(pair[0] + ' , ' + pair[1]);
+       //}
+       let response = await fetch(`/topic/${updateId}`, {
+         method = 'PUT',
+         body : new URLSearchParams(data),
+         headers: new Headers({
+           'Content-type' : 'application/x-www-form-urlencoded; charset=UTF-8'
+         })
+       })
+       let result = await response.json()
+       edit_form.reset();
+       window.location.reload();
+       alert(result.msg);
+     }*/
+
+     
+     /* deletebtn.onclick = function(e) {
+        e.preventDefault();
+         // console.log(deletebtn)
+        // const id = deletebtn.dataset.id
+        const id = e.target.getAttribute('data-id')
+
+         console.log(id)
+         const endpoint = `/topic/${id}` ;
+         fetch(endpoint , {
+             method : 'DELETE'
+         }).then(res => res.json()).then(data => {
+             console.log(data);
+             window.location.href = data.redirect ;
+         }).catch(err => console.log(err))
+      
+      }*/
+     
+
+  </script>
+    
+    </body>
+</html>
